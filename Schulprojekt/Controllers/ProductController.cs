@@ -19,13 +19,25 @@ namespace Schulprojekt.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string category)
         {
-            var products = await _context.Products
-                .Include(p => p.Category)
-                .ToListAsync();
+            var categories = await _context.Categories.ToListAsync();
 
-            return View(products);
+            var products = string.IsNullOrEmpty(category)
+                ? await _context.Products.Include(p => p.Category).ToListAsync()
+                : await _context.Products
+                    .Include(p => p.Category)
+                    .Where(p => p.Category.Name == category)
+                    .ToListAsync();
+
+            var viewModel = new ProductFilterViewModel
+            {
+                Categories = categories,
+                SelectedCategory = category,
+                Products = products
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]

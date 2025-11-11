@@ -1,19 +1,52 @@
-﻿@model IEnumerable<Schulprojekt.Models.Product>
+﻿@model ProductFilterViewModel
 
 <h2>Produkte</h2>
 
-<div class="row">
-    @foreach (var item in Model)
+<div class="chip-container">
+    @foreach (var category in Model.Categories)
     {
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <img src="~/images/@item.ImageName" class="card-img-top" alt="@item.Name" />
+        <a asp-action="Index" asp-route-category="@category.Name" class="chip @(Model.SelectedCategory == category.Name ? "active" : "")">
+            @category.Name
+        </a>
+    }
+</div>
+
+<hr />
+
+<div class="row">
+    @foreach (var product in Model.Products)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <img src="@product.ImageFile" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;" />
                 <div class="card-body">
-                    <h5 class="card-title">@item.Name</h5>
-                    <p class="card-text">@item.Price.ToString("C")</p>
-                    <a href="@Url.Action("Details", "Product", new { id = item.Id })" class="btn btn-primary">Details</a>
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-text">@product.Price.ToString("C")</p>
+                    <p class="card-text"><small class="text-muted">@product.Category.Name</small></p>
                 </div>
             </div>
         </div>
     }
 </div>
+
+
+<style>
+    .chip-container {
+        margin-bottom: 20px;
+    }
+
+    .chip {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 5px;
+        background-color: #eee;
+        border-radius: 25px;
+        text-decoration: none;
+        color: black;
+    }
+
+        .chip.active {
+            background-color: #007bff;
+            color: white;
+        }
+</style>
