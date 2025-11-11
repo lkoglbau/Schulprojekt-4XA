@@ -1,0 +1,31 @@
+﻿@model CheckoutViewModel
+
+<h2>Lieferadresse & Zahlung</h2>
+
+<form asp-action="Checkout" method="post">
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="City"></label>
+        <input asp-for="City" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="PostalCode"></label>
+        <input asp-for="PostalCode" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Country"></label>
+        <input asp-for="Country" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="PaymentMethod"></label>
+        <select asp-for="PaymentMethod" class="form-control">
+            <option value="Kreditkarte">Kreditkarte</option>
+            <option value="Bar">Bar bei Lieferung</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Bestellung abschicken</button>
+</form>

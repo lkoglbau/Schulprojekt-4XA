@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Schulprojekt.Models.Product>
+
+<h2>Produkte</h2>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="~/images/@item.ImageName" class="card-img-top" alt="@item.Name" />
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">@item.Price.ToString("C")</p>
+                    <a href="@Url.Action("Details", "Product", new { id = item.Id })" class="btn btn-primary">Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

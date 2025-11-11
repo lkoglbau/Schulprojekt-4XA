@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Schulprojekt.Models.CartItem>
+
+<h2>Warenkorb</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Produkt</th>
+            <th>Menge</th>
+            <th>Preis</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Product.Name</td>
+                <td>@item.Quantity</td>
+                <td>@(item.Product.Price* item.Quantity)</td>
+                <td>
+                    <form asp-action="Remove" method="post">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">Entfernen</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

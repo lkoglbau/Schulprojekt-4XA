@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Schulprojekt.Models.Category>
+
+<h2>Kategorien</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Neue Kategorie erstellen</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>

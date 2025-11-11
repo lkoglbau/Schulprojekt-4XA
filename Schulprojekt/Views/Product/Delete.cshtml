@@ -1,0 +1,13 @@
+﻿@model Schulprojekt.Models.Product
+
+<h2>Produkt löschen</h2>
+
+<div>
+    <h4>@Model.Name</h4>
+    <p>Bist du sicher, dass du dieses Produkt löschen möchtest?</p>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Löschen</button>
+        <a asp-action="Index" class="btn btn-secondary">Abbrechen</a>
+    </form>
+</div>

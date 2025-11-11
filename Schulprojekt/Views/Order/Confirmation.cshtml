@@ -1,0 +1,46 @@
+﻿@model Schulprojekt.Models.Order
+
+<h2>Bestellung bestätigt 🎉</h2>
+
+<p>Vielen Dank für deine Bestellung!</p>
+
+<hr />
+
+<h4>Bestellnummer: @Model.Id</h4>
+<p><strong>Datum:</strong> @Model.OrderDate.ToShortDateString()</p>
+<p><strong>Gesamtbetrag:</strong> @Model.TotalAmount.ToString("C")</p>
+<p><strong>Status:</strong> @Model.Status</p>
+
+<h4>Lieferadresse:</h4>
+<ul>
+    <li>@Model.ShippingInfo.Address</li>
+    <li>@Model.ShippingInfo.PostalCode @Model.ShippingInfo.City</li>
+    <li>@Model.ShippingInfo.Country</li>
+</ul>
+
+<h4>Zahlung:</h4>
+<p><strong>Methode:</strong> @Model.Payment.Method</p>
+<p><strong>Status:</strong> @Model.Payment.Status</p>
+
+<h4>Produkte:</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Produkt</th>
+            <th>Menge</th>
+            <th>Einzelpreis</th>
+            <th>Gesamt</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            <tr>
+                <td>@item.Product.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.UnitPrice.ToString("C")</td>
+                <td>@(item.Quantity* item.UnitPrice).ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
