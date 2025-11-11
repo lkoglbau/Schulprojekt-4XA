@@ -2,7 +2,54 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="hero bg-light text-center d-flex align-items-center" style="min-height: 40vh;">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3">Willkommen bei VintageWear</h1>
+        <p class="lead text-muted mb-4">
+            Vintage Shop
+        </p>
+    </div>
+</section>
+
+<section class="shop-for py-5 bg-white">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-4">Für wen möchtest du shoppen?</h2>
+        <div class="row g-4 justify-content-center">
+            <!-- Männer -->
+            <div class="col-10 col-sm-6 col-md-4">
+                <a asp-controller="Products" asp-action="Category" asp-route-category="Men" class="text-decoration-none text-dark">
+                    <div class="card shadow-sm border-0 hover-scale">
+                        <img src="/images/FürMänner.webp" class="card-img-top rounded-top" alt="Für Männer">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">Männer</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Frauen -->
+            <div class="col-10 col-sm-6 col-md-4">
+                <a asp-controller="Products" asp-action="Category" asp-route-category="Women" class="text-decoration-none text-dark">
+                    <div class="card shadow-sm border-0 hover-scale">
+                        <img src="/images/FürFrauen.webp" class="card-img-top rounded-top" alt="Für Frauen">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">Frauen</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Kinder -->
+            <div class="col-10 col-sm-6 col-md-4">
+                <a asp-controller="Products" asp-action="Category" asp-route-category="Kids" class="text-decoration-none text-dark">
+                    <div class="card shadow-sm border-0 hover-scale">
+                        <img src="/images/FürKinder.webp" class="card-img-top rounded-top" alt="Für Kinder">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">Kinder</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

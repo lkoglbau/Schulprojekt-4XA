@@ -18,5 +18,19 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  margin: 0;
+}
+
+.hover-scale {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .hover-scale:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
 }

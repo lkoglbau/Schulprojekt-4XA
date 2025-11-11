@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NETCore.MailKit.Core;
 using Schulprojekt.Data;
 using Schulprojekt.Models;
 using System.Security.Claims;
@@ -13,11 +14,13 @@ namespace Schulprojekt.Controllers
     {
         private readonly AppDBContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly EmailService _emailService;
 
-        public OrderController(AppDBContext context, UserManager<IdentityUser> userManager)
+        public OrderController(AppDBContext context, UserManager<IdentityUser> userManager, EmailService emailService)
         {
             _context = context;
             _userManager = userManager;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -25,6 +28,9 @@ namespace Schulprojekt.Controllers
         {
             return View(new CheckoutViewModel());
         }
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Checkout(CheckoutViewModel model)
@@ -76,6 +82,8 @@ namespace Schulprojekt.Controllers
             _context.Orders.Add(order);
             _context.CartItems.RemoveRange(cartItems);
             await _context.SaveChangesAsync();
+            //var user = await _userManager.GetUserAsync(User);
+            //await _emailService.SendOrderConfirmationAsync(user.Email, order);
 
             return RedirectToAction("Confirmation", new { id = order.Id });
         }
