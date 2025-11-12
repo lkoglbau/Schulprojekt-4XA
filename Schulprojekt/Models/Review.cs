@@ -10,11 +10,11 @@ namespace Schulprojekt.Models
 
         [ForeignKey(nameof(ProductId))]
         public int ProductId { get; set; }
-        public required Product Product { get; set; }
+        public Product ?Product { get; set; }
 
         [ForeignKey(nameof(UserId))]
         public required string UserId { get; set; }
-        public required IdentityUser User { get; set; }
+        public IdentityUser ?User { get; set; }
 
         [Range(1, 5)]
         public int Rating { get; set; }

@@ -2,54 +2,88 @@
     ViewData["Title"] = "Home Page";
 }
 
-<section class="hero bg-light text-center d-flex align-items-center" style="min-height: 40vh;">
-    <div class="container">
+<section class="hero text-center d-flex align-items-center position-relative" style="
+    min-height: 40vh;
+    background-image: url('/images/Hero-Page.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+">
+    <!-- Dunkles Overlay -->
+    <div style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Abdunkelung */
+        z-index: 1;
+    "></div>
+
+    <!-- Inhalt über dem Overlay -->
+    <div class="container position-relative" style="z-index: 2;">
         <h1 class="display-4 fw-bold mb-3">Willkommen bei VintageWear</h1>
-        <p class="lead text-muted mb-4">
-            Vintage Shop
-        </p>
+        <p class="lead mb-4">Vintage Shop</p>
+        <a class="btn btn-dark" asp-controller="Product" asp-action="Index" >zu den Produkten</a>
     </div>
 </section>
+
 
 <section class="shop-for py-5 bg-white">
     <div class="container text-center">
         <h2 class="fw-bold mb-4">Für wen möchtest du shoppen?</h2>
-        <div class="row g-4 justify-content-center">
+        <div class="row g-4 justify-content-center mt-4">
             <!-- Männer -->
             <div class="col-10 col-sm-6 col-md-4">
-                <a asp-controller="Products" asp-action="Category" asp-route-category="Men" class="text-decoration-none text-dark">
-                    <div class="card shadow-sm border-0 hover-scale">
-                        <img src="/images/FürMänner.webp" class="card-img-top rounded-top" alt="Für Männer">
-                        <div class="card-body">
-                            <h5 class="card-title fw-semibold">Männer</h5>
-                        </div>
+                <a asp-controller="Product" asp-action="Category" asp-route-category="Herren" class="text-decoration-none text-dark">
+                    <div class="text-center">
+                        <img src="/images/FürMänner.webp" class="rounded-circle mx-auto d-block category-img" alt="Für Männer">
+                        <h5 class="fw-semibold mt-3">Männer</h5>
                     </div>
                 </a>
             </div>
 
+
             <!-- Frauen -->
             <div class="col-10 col-sm-6 col-md-4">
-                <a asp-controller="Products" asp-action="Category" asp-route-category="Women" class="text-decoration-none text-dark">
-                    <div class="card shadow-sm border-0 hover-scale">
-                        <img src="/images/FürFrauen.webp" class="card-img-top rounded-top" alt="Für Frauen">
-                        <div class="card-body">
-                            <h5 class="card-title fw-semibold">Frauen</h5>
-                        </div>
+                <a asp-controller="Product" asp-action="Category" asp-route-category="Frauen" class="text-decoration-none text-dark">
+                    <div class="text-center">
+                        <img src="/images/FürFrauen.webp" class="rounded-circle mx-auto d-block category-img" alt="Für Männer">
+                        <h5 class="fw-semibold mt-3">Frauen</h5>
                     </div>
                 </a>
             </div>
 
             <!-- Kinder -->
             <div class="col-10 col-sm-6 col-md-4">
-                <a asp-controller="Products" asp-action="Category" asp-route-category="Kids" class="text-decoration-none text-dark">
-                    <div class="card shadow-sm border-0 hover-scale">
-                        <img src="/images/FürKinder.webp" class="card-img-top rounded-top" alt="Für Kinder">
-                        <div class="card-body">
-                            <h5 class="card-title fw-semibold">Kinder</h5>
-                        </div>
+                <a asp-controller="Product" asp-action="Category" asp-route-category="Kinder" class="text-decoration-none text-dark">
+                    <div class="text-center">
+                        <img src="/images/FürKinder.webp" class="rounded-circle mx-auto d-block category-img" alt="Für Männer">
+                        <h5 class="fw-semibold mt-3">Kinder</h5>
                     </div>
                 </a>
             </div>
         </div>
     </div>
 </section>
+
+<hr />
+
+<style>
+    .category-img {
+        width: 180px;
+        height: 180px;
+        object-fit: cover;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+    }
+
+        .category-img:hover {
+            transform: scale(1.05);
+        }
+
+    .card-body {
+        text-align: center;
+    }
+</style>

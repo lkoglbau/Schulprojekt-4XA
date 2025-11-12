@@ -17,3 +17,52 @@
         </form>
     </div>
 </div>
+
+<hr />
+<h4>Bewertung abgeben</h4>
+
+<form asp-action="AddReview" method="post">
+    <input type="hidden" name="productId" value="@Model.Id" />
+
+    <div class="mb-2">
+        <label for="rating">Sterne:</label>
+        <select name="rating" class="form-select" required>
+            <option value="5">★★★★★</option>
+            <option value="4">★★★★</option>
+            <option value="3">★★★</option>
+            <option value="2">★★</option>
+            <option value="1">★</option>
+        </select>
+    </div>
+
+    <div class="mb-2">
+        <label for="comment">Kommentar:</label>
+        <textarea name="comment" class="form-control" rows="3" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Absenden</button>
+</form>
+
+<hr />
+
+@if (Model.Reviews != null){
+<h4>Bewertungen</h4>
+
+    @foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedAd))
+    {
+        <div class="border rounded p-2 mb-2">
+            <strong>@review.User?.UserName</strong> – @review.CreatedAd.ToShortDateString()<br />
+            <span>
+                @for (int i = 0; i < review.Rating; i++)
+                {
+                    <text>★</text>
+                }
+            </span>
+            <p>@review.Comment</p>
+        </div>
+    }
+}
+else
+{
+    <p class="text-muted">Noch keine Bewertungen vorhanden.</p>
+}

@@ -5,7 +5,8 @@
 <div class="chip-container">
     @foreach (var category in Model.Categories)
     {
-        <a asp-action="Index" asp-route-category="@category.Name" class="chip @(Model.SelectedCategory == category.Name ? "active" : "")">
+        <a asp-controller="Product" asp-action="Category" asp-route-category="@category.Name"
+           class="chip @(Model.SelectedCategory == category.Name ? "active" : "")">
             @category.Name
         </a>
     }
@@ -17,17 +18,24 @@
     @foreach (var product in Model.Products)
     {
         <div class="col-md-4">
-            <div class="card mb-3">
-                <img src="@product.ImageFile" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;" />
+            <div class="card mb-3 card-shadow">
+                <img src="@Url.Content("~/images/" + product.ImageName)" class="card-img-top" alt="@product.Name"
+                     style="height: 350px; object-fit: cover;" />
                 <div class="card-body">
                     <h5 class="card-title">@product.Name</h5>
                     <p class="card-text">@product.Price.ToString("C")</p>
                     <p class="card-text"><small class="text-muted">@product.Category.Name</small></p>
+
+                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"
+                       class="btn btn-dark mt-2">Zum Produkt</a>
                 </div>
             </div>
         </div>
     }
 </div>
+
+
+<hr />
 
 
 <style>
@@ -43,10 +51,25 @@
         border-radius: 25px;
         text-decoration: none;
         color: black;
+        transition: background-color 0.3s, color 0.3s;
     }
 
-        .chip.active {
-            background-color: #007bff;
+        .chip:hover {
+            background-color: #ddd;
             color: white;
+        }
+
+        .chip.active {
+            background-color: #d2691e;
+            color: white;
+        }
+
+        .card-shadow {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s ease;
+        }
+
+        .card-shadow:hover {
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
         }
 </style>

@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Schulprojekt.Data;
 using Schulprojekt.Models;
-using System.Threading.Tasks;
 using System.IO;
-using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Schulprojekt.Controllers
 {
@@ -45,6 +47,7 @@ namespace Schulprojekt.Controllers
         {
             var product = await _context.Products
                 .Include(p => p.Category)
+                .Include(p => p.Reviews)
                 .FirstOrDefaultAsync(p => p.Id == id);
             return View(product);
         }
@@ -168,7 +171,45 @@ namespace Schulprojekt.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Category(string category)
+        {
+            var products = await _context.Products
+                .Include(p => p.Category)
+                .Where(p => p.Category.Name == category)
+                .ToListAsync();
 
+            var categories = await _context.Categories.ToListAsync();
+
+            var viewModel = new ProductFilterViewModel
+            {
+                Products = products,
+                Categories = categories,
+                SelectedCategory = category
+            };
+
+            return View("Index", viewModel); // ← View erwartet ViewModel
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> AddReview(int productId, int rating, string comment)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var review = new Review
+            {
+                ProductId = productId,
+                UserId = userId,
+                Rating = rating,
+                Comment = comment,
+                CreatedAd = DateTime.Now
+            };
+
+            await _context.Reviews.AddAsync(review);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = productId });
+        }
 
     }
 }
