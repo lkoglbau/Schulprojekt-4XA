@@ -12,9 +12,20 @@ builder.Services.AddScoped<EmailService>();
 builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDBContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options
+    .SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<AppDBContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    await AdminRoleSeeder.AdminRoleSeederAsync(roleManager, userManager);
+}
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
