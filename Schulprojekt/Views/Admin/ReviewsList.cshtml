@@ -1,4 +1,94 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-<h1>Bewertungen & Kommentare verwalten</h1>
+﻿
+@model IEnumerable<Schulprojekt.Models.Review>
+
+@{
+    string activeFilter = ViewBag.Filter ?? "all";
+}
+<body>
+    <h2>Bewertungen & Kommentare moderieren</h2>
+
+    <!-- Bootstrap Tabs -->
+    <ul class="nav nav-tabs mb-3 text-black">
+        <li class="nav-item">
+            <a class="nav-link @(activeFilter == "all" ? "active" : "")"
+               asp-action="ReviewsList" asp-route-filter="all">Alle</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(activeFilter == "approved" ? "active" : "")"
+               asp-action="ReviewsList" asp-route-filter="approved">Freigegeben</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(activeFilter == "pending" ? "active" : "")"
+               asp-action="ReviewsList" asp-route-filter="pending">Wartend</a>
+        </li>
+    </ul>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Produkt</th>
+                <th>Benutzer</th>
+                <th>Sterne</th>
+                <th>Kommentar</th>
+                <th>Datum</th>
+                <th>Status</th>
+                <th>Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var review in Model)
+            {
+                <tr>
+                    <td>@review.Product?.Name</td>
+                    <td>@review.User?.UserName</td>
+                    <td>
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= review.Rating)
+                            {
+                                <span class="text-warning">&#9733;</span>
+                            }
+                            else
+                            {
+                                <span class="text-secondary">&#9734;</span>
+                            }
+                        }
+                    </td>
+                    <td>@review.Comment</td>
+                    <td>@review.CreatedAd.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>
+                        @if (review.IsApproved)
+                        {
+                            <span class="badge bg-success">Freigegeben</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">Wartet</span>
+                        }
+                    </td>
+                    <td>
+                        @if (!review.IsApproved)
+                        {
+                            <form asp-action="ApproveReview" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@review.Id" />
+                                <button type="submit" class="btn btn-sm btn-success">Freigeben</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="HideReview" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@review.Id" />
+                                <button type="submit" class="btn btn-sm btn-warning">Verstecken</button>
+                            </form>
+                        }
+
+                        <form asp-action="RejectReview" method="post" class="d-inline ms-1">
+                            <input type="hidden" name="id" value="@review.Id" />
+                            <button type="submit" class="btn btn-sm btn-danger">Löschen</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>

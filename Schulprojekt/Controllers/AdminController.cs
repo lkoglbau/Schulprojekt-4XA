@@ -50,18 +50,83 @@ namespace Schulprojekt.Controllers
         }
 
 
-        public IActionResult ProductList()
+        public async Task<IActionResult> ProductList()
         {
             var products = _context.Products
                 .Include(p => p.Category)
-                .ToList();
+                .ToListAsync();
             return View(products);
         }
 
-        public IActionResult ReviewsList()
+        //---------------------------------------------------------------------REVIEWS VERWALTEN-------------------------------------------------------------------
+
+
+        public async Task<IActionResult> ReviewsList(string filter = "all")
         {
-            return View();
+            var reviewsQuery = _context.Reviews
+            .Include(r => r.User)
+            .Include(r => r.Product)
+            .OrderByDescending(r => r.CreatedAd)
+            .AsQueryable();
+
+            switch (filter.ToLower())
+            {
+                case "approved":
+                    reviewsQuery = reviewsQuery.Where(r => r.IsApproved);
+                    break;
+                case "pending":
+                    reviewsQuery = reviewsQuery.Where(r => !r.IsApproved);
+                    break;
+                default:
+                    // "all"
+                    break;
+            }
+
+            var reviews = await reviewsQuery.ToListAsync();
+            ViewBag.Filter = filter;
+
+
+            return View(reviewsQuery);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ApproveReview(int id)
+        {
+            var review = _context.Reviews.Find(id);
+            if (review != null)
+            {
+                review.IsApproved = true;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("ReviewsList");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> HideReview(int id)
+        {
+            var review = _context.Reviews.Find(id);
+            if (review != null)
+            {
+                review.IsApproved = false;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("ReviewsList");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteReview(int id)
+        {
+            var review = _context.Reviews.Find(id);
+            if (review != null)
+            {
+                _context.Reviews.Remove(review);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("ReviewsList");
+        }
+
+
+
 
 
         //---------------------------------------------------------------------USER VERWALTUNG-------------------------------------------------------------------

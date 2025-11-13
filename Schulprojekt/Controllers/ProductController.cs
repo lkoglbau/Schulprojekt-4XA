@@ -47,7 +47,7 @@ namespace Schulprojekt.Controllers
         {
             var product = await _context.Products
                 .Include(p => p.Category)
-                .Include(p => p.Reviews)
+                .Include(p => p.Reviews.Where(r => r.IsApproved))
                 .FirstOrDefaultAsync(p => p.Id == id);
             return View(product);
         }
@@ -202,7 +202,8 @@ namespace Schulprojekt.Controllers
                 UserId = userId,
                 Rating = rating,
                 Comment = comment,
-                CreatedAd = DateTime.Now
+                CreatedAd = DateTime.Now,
+                IsApproved = false
             };
 
             await _context.Reviews.AddAsync(review);

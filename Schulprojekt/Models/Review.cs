@@ -23,5 +23,7 @@ namespace Schulprojekt.Models
         public string Comment { get; set; } = string.Empty;
 
         public DateTime CreatedAd { get; set; }
+
+        public bool IsApproved { get; set; } = false;
     }
 }
