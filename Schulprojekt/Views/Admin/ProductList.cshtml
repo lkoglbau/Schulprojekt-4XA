@@ -1,5 +1,35 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<Product>
 
 <h1>Produkte verwalten</h1>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Kategorie</th>
+            <th>Preis</th>
+            <th>Lager</th>
+            <th>Bild</th>
+            <th>Aktionen</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Category.Name</td>
+                <td>@product.Price.ToString("C")</td>
+                <td>@product.StockQuantity</td>
+                <td>
+                    <img src="@product.ImageName" alt="@product.Name" style="height: 50px;" />
+                </td>
+                <td>
+                    <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-sm btn-outline-primary">Bearbeiten</a>
+                    <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-sm btn-outline-danger">Löschen</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-controller="Product" asp-action="Create" class="btn btn-sm btn-dark">Neues Produkt anlegen</a>

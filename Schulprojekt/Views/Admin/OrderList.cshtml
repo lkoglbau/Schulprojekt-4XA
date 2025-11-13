@@ -1,4 +1,31 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-<h1>Bestellungen verwalten</h1>
+﻿@model List<Order>
+
+<h2>Bestellübersicht</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Bestellnr.</th>
+            <th>Kunde</th>
+            <th>Datum</th>
+            <th>Status</th>
+            <th>Gesamt</th>
+            <th>Aktionen</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.User?.Email</td>
+                <td>@order.OrderDate.ToString("dd.MM.yyyy")</td>
+                <td>@order.Status</td>
+                <td>@order.TotalAmount.ToString("C")</td>
+                <td>
+                    <a asp-action="OrderDetails" asp-route-id="@order.Id" class="btn btn-sm btn-outline-primary">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

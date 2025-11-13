@@ -12,7 +12,13 @@ namespace Schulprojekt.Data
                 await _roleManager.CreateAsync(new IdentityRole("Admin"));
             }
 
-            if(await _userManager.FindByEmailAsync("admin@admin.com") == null)
+            if (!await _roleManager.RoleExistsAsync("Customer"))
+            {
+                await _roleManager.CreateAsync(new IdentityRole("Customer"));
+            }
+
+
+            if (await _userManager.FindByEmailAsync("admin@admin.com") == null)
             {
                 var user = new IdentityUser
                 {
