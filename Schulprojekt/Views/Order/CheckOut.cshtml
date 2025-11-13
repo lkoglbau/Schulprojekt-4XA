@@ -1,31 +1,93 @@
 ﻿@model CheckoutViewModel
 
-<h2>Lieferadresse & Zahlung</h2>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Lieferadresse & Zahlung</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Checkout" method="post">
+                        <!-- Adresse -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Address" class="form-control" placeholder="Adresse" />
+                            <label asp-for="Address">Adresse</label>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
 
-<form asp-action="Checkout" method="post">
-    <div class="form-group">
-        <label asp-for="Address"></label>
-        <input asp-for="Address" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="City"></label>
-        <input asp-for="City" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="PostalCode"></label>
-        <input asp-for="PostalCode" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Country"></label>
-        <input asp-for="Country" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="PaymentMethod"></label>
-        <select asp-for="PaymentMethod" class="form-control">
-            <option value="Kreditkarte">Kreditkarte</option>
-            <option value="Bar">Bar bei Lieferung</option>
-        </select>
-    </div>
+                        <!-- Stadt -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="City" class="form-control" placeholder="Stadt" />
+                            <label asp-for="City">Stadt</label>
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
 
-    <button type="submit" class="btn btn-success">Bestellung abschicken</button>
-</form>
+                        <!-- PLZ -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="PostalCode" class="form-control" placeholder="PLZ" />
+                            <label asp-for="PostalCode">PLZ</label>
+                            <span asp-validation-for="PostalCode" class="text-danger"></span>
+                        </div>
+
+                        <!-- Land -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Country" class="form-control" placeholder="Land" />
+                            <label asp-for="Country">Land</label>
+                            <span asp-validation-for="Country" class="text-danger"></span>
+                        </div>
+
+                        <!-- Zahlungsmethode -->
+                        <div class="form-floating mb-4">
+                            <select asp-for="PaymentMethod" class="form-select">
+                                <option value="Kreditkarte">Kreditkarte</option>
+                                <option value="Bar">Bar bei Lieferung</option>
+                            </select>
+                            <label asp-for="PaymentMethod">Zahlungsmethode</label>
+                            <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                        </div>
+
+                        <!-- Kartendaten (nur wenn Kreditkarte gewählt) -->
+                        <div id="cardDataSection">
+                            <div class="form-floating mb-3">
+                                <input for="CardNumber" class="form-control" placeholder="Kartennummer" maxlength="16" />
+                                <label for="CardNumber">Kartennummer</label>
+                                <span validation-for="CardNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input for="ExpiryDate" class="form-control" placeholder="MM/YY" />
+                                        <label for="ExpiryDate">Ablaufdatum (MM/YY)</label>
+                                        <span validation-for="ExpiryDate" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input for="CVV" class="form-control" placeholder="CVV" maxlength="4" />
+                                        <label for="CVV">CVV</label>
+                                        <span validation-for="CVV" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input for="CardHolder" class="form-control" placeholder="Name des Karteninhabers" />
+                                <label for="CardHolder">Name des Karteninhabers</label>
+                                <span validation-for="CardHolder" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Button -->
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-success btn-lg">
+                               Bestellen
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

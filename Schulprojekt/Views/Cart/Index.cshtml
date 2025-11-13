@@ -1,31 +1,67 @@
 ﻿@model IEnumerable<Schulprojekt.Models.CartItem>
 
-<h2>Warenkorb</h2>
+<h2 class="mb-4">Dein Warenkorb</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Produkt</th>
-            <th>Menge</th>
-            <th>Preis</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Product.Name</td>
-                <td>@item.Quantity</td>
-                <td>@(item.Product.Price* item.Quantity)</td>
-                <td>
-                    <form asp-action="Remove" method="post">
-                        <input type="hidden" name="id" value="@item.Id" />
-                        <button type="submit" class="btn btn-danger btn-sm">Entfernen</button>
-                    </form>
-                </td>
-            </tr>
-        }
-        <a class="btn btn-success btn-sm" asp-controller="Order" asp-action="CheckOut">zum Checkout</a>
-    </tbody>
-</table>
+@if (Model != null && Model.Any())
+{
+    <div class="card shadow-lg p-3">
+            <table class="table align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Produkt</th>
+                        <th class="text-center">Menge</th>
+                        <th class="text-end">Preis</th>
+                        <th class="text-center">Aktion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@item.Product.Name</strong><br />
+                                <small class="text-muted">@item.Product.Price.ToString("C") pro Stück</small>
+                            </td>
+                            <td class="text-center">@item.Quantity</td>
+                            <td class="text-end fw-bold">
+                                @(item.Product.Price* item.Quantity)
+                            </td>
+                            <td class="text-center">
+                                <form asp-action="Remove" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-danger">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+    </div>
+
+            <!-- Summenzeile -->
+            <div class="text-end mt-3">
+                <h5 class="mb-0 text-success fw-bold">
+                   € @Model.Sum(i => i.Product.Price * i.Quantity)
+                </h5>
+            </div>
+
+            <!-- Checkout Button -->
+            <div class="text-end mt-4">
+                <a class="btn btn-success btn-lg" asp-controller="Order" asp-action="CheckOut">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+                    </svg> Zum Checkout
+                </a>
+            </div>
+        
+    
+            }
+            else
+            {
+                <p class="text-muted fst-italic">Dein Warenkorb ist leer.</p>
+            }

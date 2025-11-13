@@ -1,68 +1,105 @@
 ﻿@model Schulprojekt.Models.Product
 
-<h2>@Model.Name</h2>
+@{
+    ViewData["Title"] = "Product Details";
+}
 
-<div class="row">
-    <div class="col-md-6">
-        <img src="~/images/@Model.ImageName" class="card-img-top" alt="@Model.Name" />
 
-    </div>
-    <div class="col-md-6">
-        <h4>Preis: @Model.Price.ToString("C")</h4>
-        <p>@Model.Description</p>
-        <p><strong>Kategorie:</strong> @Model.Category?.Name</p>
-        <form asp-controller="Cart" asp-action="Add" method="post">
-            <input type="hidden" name="productId" value="@Model.Id" />
-            <button type="submit" class="btn btn-success">In den Warenkorb</button>
-        </form>
-    </div>
-</div>
+<style>
+        .card{
+            border-radius: 16px;
+        }
+</style>
 
-<hr />
-<h4>Bewertung abgeben</h4>
+<body>
+       <div class="card shadow-lg p-4 mb-3">
+            <div class="row">
+                <div class="col-md-6 d-flex align-items-center justify-content-center">
+                    <img src="~/images/@Model.ImageName" style="width: 300px; height: auto" class="card-img-top" alt="@Model.Name" />
+                </div>
+                <div class="col-md-6">
+                    <h2>@Model.Name</h2>
+                    <h4>@Model.Price.ToString("C")</h4>
+                    <p>@Model.Description</p>
+                    <p><strong>Kategorie:</strong> @Model.Category?.Name</p>
+                    <form asp-controller="Cart" asp-action="Add" method="post">
+                        <input type="hidden" name="productId" value="@Model.Id" />
+                        <button type="submit" class="btn btn-success btn-lg">In den Warenkorb</button>
+                    </form>
+                </div>
+            </div>
+       </div>
+ 
 
-<form asp-action="AddReview" method="post">
-    <input type="hidden" name="productId" value="@Model.Id" />
+        <hr />
 
-    <div class="mb-2">
-        <label for="rating">Sterne:</label>
-        <select name="rating" class="form-select" required>
-            <option value="5">★★★★★</option>
-            <option value="4">★★★★</option>
-            <option value="3">★★★</option>
-            <option value="2">★★</option>
-            <option value="1">★</option>
-        </select>
-    </div>
+        <h4 class="mt-5">Bewerte dieses Produkt</h4>
 
-    <div class="mb-2">
-        <label for="comment">Kommentar:</label>
-        <textarea name="comment" class="form-control" rows="3" required></textarea>
-    </div>
+        <div class="RankingContainer">
+            <form asp-action="AddReview" method="post" class="card shadow-lg p-4 mb-3">
+                <input type="hidden" name="productId" value="@Model.Id" />
 
-    <button type="submit" class="btn btn-primary">Absenden</button>
-</form>
+                <div class="mb-3">
+                    <select name="rating" class="form-select w-auto" required>
+                        <option value="5">★★★★★ (Sehr gut)</option>
+                        <option value="4">★★★★☆ (Gut)</option>
+                        <option value="3">★★★☆☆ (Okay)</option>
+                        <option value="2">★★☆☆☆ (Schwach)</option>
+                        <option value="1">★☆☆☆☆ (Sehr schlecht)</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <textarea name="comment" class="form-control" rows="3" placeholder="Hinterlasse einen Kommentar..." required></textarea>
+                </div>
 
-<hr />
-
-@if (Model.Reviews != null){
-<h4>Bewertungen</h4>
-
-    @foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedAd))
-    {
-        <div class="border rounded p-2 mb-2">
-            <strong>@review.User?.UserName</strong> – @review.CreatedAd.ToShortDateString()<br />
-            <span>
-                @for (int i = 0; i < review.Rating; i++)
-                {
-                    <text>★</text>
-                }
-            </span>
-            <p>@review.Comment</p>
+                <button type="submit" class="btn btn-dark">Absenden</button>
+            </form>
         </div>
-    }
-}
-else
-{
-    <p class="text-muted">Noch keine Bewertungen vorhanden.</p>
-}
+        @if (TempData["SuccessMessage"] != null)
+            {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            }
+
+        <hr />
+
+        @if (Model.Reviews != null && Model.Reviews.Any())
+        {
+            @foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedAd))
+            {
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>@review.User?.UserName</strong>
+                                <small class="text-muted"> – @review.CreatedAd.ToShortDateString()</small>
+                            </div>
+                            <div>
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= review.Rating)
+                                    {
+                                        <span class="text-warning">&#9733;</span> <!-- gefüllter Stern -->
+                                    }
+                                    else
+                                    {
+                                        <span class="text-secondary">&#9734;</span> <!-- leerer Stern -->
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <p class="mt-2">@review.Comment</p>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-muted fst-italic">Noch keine Bewertungen vorhanden.</p>
+        }
+</body>
+
+
+

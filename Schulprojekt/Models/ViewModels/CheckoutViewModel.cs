@@ -17,3 +17,5 @@ public class CheckoutViewModel
     [Required]
     public string PaymentMethod { get; set; }
 }
+
+

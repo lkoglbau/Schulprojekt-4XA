@@ -48,6 +48,7 @@ namespace Schulprojekt.Controllers
             var product = await _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.Reviews.Where(r => r.IsApproved))
+                    .ThenInclude(r => r.User)
                 .FirstOrDefaultAsync(p => p.Id == id);
             return View(product);
         }
@@ -208,6 +209,8 @@ namespace Schulprojekt.Controllers
 
             await _context.Reviews.AddAsync(review);
             await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Danke für deine Bewertung! Sie wird nach Freigabe sichtbar.";
 
             return RedirectToAction("Details", new { id = productId });
         }

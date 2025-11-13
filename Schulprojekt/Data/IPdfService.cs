@@ -44,17 +44,20 @@ public class PdfService : IPdfService
         {
             row.RelativeColumn().Stack(stack =>
             {
-                stack.Item().Text("Dein Shop Name").Style(Typography.Title);
-                stack.Item().Text("Adresse • UID • IBAN");
-                stack.Item().Text($"Rechnung {order.InvoiceNumber ?? "-"}").SemiBold().FontSize(16);
-                stack.Item().Text($"Datum: {order.OrderDate:dd.MM.yyyy}");
+                stack.Item().Text("VintedWear").Style(Typography.Title);
+                stack.Item().Text("Wien");
+
+
+                
+                
             });
 
             row.ConstantColumn(120).AlignRight().Stack(stack =>
             {
                 // Optional: Logo
                 // stack.Item().Image("wwwroot/images/logo.png").FitWidth();
-                stack.Item().Text("Rechnung").Bold().FontSize(22);
+                stack.Item().Text($"Rechnung {order.InvoiceNumber ?? "-"}").SemiBold().FontSize(16);
+                stack.Item().Text($"Datum: {order.OrderDate:dd.MM.yyyy}");
             });
         });
     };
@@ -65,12 +68,11 @@ public class PdfService : IPdfService
         container.Stack(stack =>
         {
             // Kunde + Versand
-            stack.Item().PaddingBottom(10).Row(row =>
+            stack.Item().PaddingTop(20).PaddingBottom(10).Row(row =>
             {
                 row.RelativeColumn().Stack(s =>
                 {
                     s.Item().Text("Kunde").Bold();
-                    s.Item().Text($"{order.User?.UserName ?? "-"}");
                     s.Item().Text($"{order.User?.Email ?? "-"}");
                 });
 
@@ -98,9 +100,6 @@ public class PdfService : IPdfService
             {
                 s.Item().Text($"Gesamt: {order.TotalAmount:C}").Bold().FontSize(14);
             });
-
-            stack.Item().PaddingTop(20).Text("Vielen Dank für deinen Einkauf!").Italic();
-            stack.Item().PaddingTop(5).Text("Rechtlicher Hinweis, Widerrufsbelehrung oder Impressum hier ergänzen.").FontSize(9);
         });
     };
 
@@ -155,5 +154,5 @@ public class PdfService : IPdfService
 
 static class Typography
 {
-    public static TextStyle Title => TextStyle.Default.SemiBold().FontSize(18);
+    public static TextStyle Title => TextStyle.Default.SemiBold().FontSize(20);
 }

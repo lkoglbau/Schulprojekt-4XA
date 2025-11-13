@@ -52,7 +52,7 @@ namespace Schulprojekt.Controllers
 
         public async Task<IActionResult> ProductList()
         {
-            var products = _context.Products
+            var products = await _context.Products
                 .Include(p => p.Category)
                 .ToListAsync();
             return View(products);
