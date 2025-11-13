@@ -15,12 +15,14 @@ namespace Schulprojekt.Controllers
         private readonly AppDBContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly EmailService _emailService;
+        private readonly IPdfService _pdf;
 
-        public OrderController(AppDBContext context, UserManager<IdentityUser> userManager, EmailService emailService)
+        public OrderController(AppDBContext context, UserManager<IdentityUser> userManager, EmailService emailService, IPdfService pdf)
         {
             _context = context;
             _userManager = userManager;
             _emailService = emailService;
+            _pdf = pdf;
         }
 
         [HttpGet]
@@ -28,8 +30,6 @@ namespace Schulprojekt.Controllers
         {
             return View(new CheckoutViewModel());
         }
-
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -106,6 +106,38 @@ namespace Schulprojekt.Controllers
             return View(order);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> DownloadInvoice(int id)
+        {
+            var order = await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.OrderItems).ThenInclude(oi => oi.Product)
+                .Include(o => o.ShippingInfo)
+                .Include(o => o.Payment)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
+            if (order == null)
+                return NotFound();
+
+            // Rechnungsnummer setzen, falls noch leer
+            if (string.IsNullOrWhiteSpace(order.InvoiceNumber))
+            {
+                order.InvoiceNumber = GenerateInvoiceNumber(order.OrderDate);
+                await _context.SaveChangesAsync();
+            }
+
+            var pdfBytes = _pdf.CreateInvoicePdf(order);
+            var fileName = $"Rechnung_{order.InvoiceNumber}.pdf";
+            return File(pdfBytes, "application/pdf", fileName);
+        }
+
+        private string GenerateInvoiceNumber(DateTime date)
+        {
+            // Simple Sequenz pro Jahr (ersetzbar durch robustere Logik/DB-Sequence)
+            var year = date.Year;
+            var count = _context.Orders.Count(o => o.OrderDate.Year == year) + 1;
+            return $"{year}-{count.ToString("D6")}";
+        }
 
     }
 }

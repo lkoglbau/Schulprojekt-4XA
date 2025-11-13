@@ -25,6 +25,6 @@ namespace Schulprojekt.Models
 
         [ForeignKey(nameof(OrderId))]
         public int OrderId { get; set; }
-        public Order Order { get; set; }
+        public Order ?Order { get; set; }
     }
 }

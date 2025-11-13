@@ -22,6 +22,6 @@ namespace Schulprojekt.Models
 
         public required Payment Payment { get; set; }
 
-
+        public string InvoiceNumber { get; set; } = string.Empty;
     }
 }
