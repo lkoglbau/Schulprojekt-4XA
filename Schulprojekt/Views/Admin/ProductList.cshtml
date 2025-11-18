@@ -25,11 +25,10 @@
                     <img src="@product.ImageName" alt="@product.Name" style="height: 50px;" />
                 </td>
                 <td>
-                    <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-sm btn-outline-primary">Bearbeiten</a>
+                    <!--<a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-sm btn-outline-primary">Bearbeiten</a>-->
                     <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-sm btn-outline-danger">Löschen</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<a asp-controller="Product" asp-action="Create" class="btn btn-sm btn-dark">Neues Produkt anlegen</a>

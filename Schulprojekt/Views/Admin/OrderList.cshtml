@@ -1,31 +1,82 @@
-﻿@model List<Order>
+﻿@using Schulprojekt.Models.ViewModels
+@model DashboardViewModel
 
-<h2>Bestellübersicht</h2>
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Bestellnr.</th>
-            <th>Kunde</th>
-            <th>Datum</th>
-            <th>Status</th>
-            <th>Gesamt</th>
-            <th>Aktionen</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var order in Model)
-        {
-            <tr>
-                <td>@order.Id</td>
-                <td>@order.User?.Email</td>
-                <td>@order.OrderDate.ToString("dd.MM.yyyy")</td>
-                <td>@order.Status</td>
-                <td>@order.TotalAmount.ToString("C")</td>
-                <td>
-                    <a asp-action="OrderDetails" asp-route-id="@order.Id" class="btn btn-sm btn-outline-primary">Details</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="container my-5">
+    <div class="row">
+        <!-- Bestellübersicht -->
+        <div class="col-lg-7">
+            <div class="card shadow-lg mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0 p-3">Bestellübersicht</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Bestellnr.</th>
+                                <th>Kunde</th>
+                                <th>Datum</th>
+                                <th>Status</th>
+                                <th>Gesamt</th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model.Orders)
+                            {
+                                <tr>
+                                    <td>@order.Id</td>
+                                    <td>@order.User?.Email</td>
+                                    <td>@order.OrderDate.ToString("dd.MM.yyyy")</td>
+                                    <td>@order.Status</td>
+                                    <td>@order.TotalAmount.ToString("C")</td>
+                                    <td>
+                                        <a asp-action="OrderDetails" asp-route-id="@order.Id" class="btn btn-sm btn-outline-dark">
+                                            Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bestseller -->
+        <div class="col-lg-5">
+            <div class="card shadow-lg mb-4">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0 p-3">Bestseller</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Produkt</th>
+                                <th>Verkaufte Menge</th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Bestseller)
+                            {
+                                <tr>
+                                    <td>@item.Product.Name</td>
+                                    <td>@item.TotalSold</td>
+                                    <td>
+                                        <a asp-action="PutOnSale" asp-route-id="@item.Product.Id" class="btn btn-sm btn-outline-success">
+                                            Rabattaktion
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

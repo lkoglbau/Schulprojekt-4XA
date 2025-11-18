@@ -4,50 +4,75 @@
     ViewData["Title"] = "Produkt erstellen";
 }
 
-<h2>Produkt erstellen</h2>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0 p-3">neues Produkt</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-controller="Product" asp-action="Create" method="post" enctype="multipart/form-data">
 
-<form asp-controller="Product" asp-action="Create" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+                        <!-- Name -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Name" class="form-control" placeholder="Produktname" />
+                            <label asp-for="Name">Produktname</label>
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <!-- Beschreibung -->
+                        <div class="form-floating mb-3">
+                            <textarea asp-for="Description" class="form-control" placeholder="Beschreibung" style="height: 120px"></textarea>
+                            <label asp-for="Description">Beschreibung</label>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <!-- Preis -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Price" class="form-control" placeholder="Preis" />
+                            <label asp-for="Price">Preis (€)</label>
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <!-- Lagerbestand -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="StockQuantity" class="form-control" placeholder="Menge" />
+                            <label asp-for="StockQuantity">Lagerbestand</label>
+                            <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                        </div>
+
+                        <!-- Bild -->
+                        <div class="mb-3">
+                            <label asp-for="ImageFile" class="form-label fw-bold">Produktbild</label>
+                            <input asp-for="ImageFile" type="file" class="form-control" />
+                            <span asp-validation-for="ImageFile" class="text-danger"></span>
+                        </div>
+
+                        <!-- Kategorie -->
+                        <div class="form-floating mb-3">
+                            <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.Categories">
+                                <option value="">-- Kategorie wählen --</option>
+                            </select>
+                            <label asp-for="CategoryId">Kategorie</label>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Zurück
+                            </a>
+                            <button type="submit" class="btn btn-dark">
+                                <i class="bi bi-save"></i> Speichern
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label asp-for="Description"></label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Price"></label>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="StockQuantity"></label>
-        <input asp-for="StockQuantity" class="form-control" />
-        <span asp-validation-for="StockQuantity" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ImageFile">Produktbild</label>
-        <input asp-for="ImageFile" type="file" class="form-control" />
-        <span asp-validation-for="ImageFile" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="CategoryId"></label>
-        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
-            <option value="">-- Kategorie wählen --</option>
-        </select>
-        <span asp-validation-for="CategoryId" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Speichern</button>
-    <a asp-action="Index" class="btn btn-secondary">Zurück</a>
-</form>
+</div>
 
 @section Scripts {
     @{

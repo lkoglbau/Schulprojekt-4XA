@@ -23,8 +23,13 @@ namespace Schulprojekt.Controllers
             return View();
         }
 
-        public IActionResult OrderList()
+        //---------------------------------------------------------------------ORDERS VERWALTEN & BESTSELLER-------------------------------------------------------------------
+
+
+        public async Task<IActionResult> OrderList()
         {
+
+            //alle Bestellungen
             var orders = _context.Orders
             .Include(o => o.User)
             .Include(o => o.OrderItems)
@@ -32,7 +37,27 @@ namespace Schulprojekt.Controllers
             .OrderByDescending(o => o.OrderDate)
             .ToList();
 
-            return View(orders);
+            //Bestseller
+            var bestseller = await _context.OrderItems
+                .Include(i => i.Product)
+                .GroupBy(i => i.Product)
+                .Select(g => new BestsellerViewModel
+                {
+                    Product = g.Key,
+                    TotalSold = g.Sum(i => i.Quantity)
+                })
+                .OrderByDescending(x => x.TotalSold)
+                .ToListAsync();
+
+            //zusammenführen in vm
+            var viewModel = new DashboardViewModel
+            {
+                Orders = orders,
+                Bestseller = bestseller,
+            };
+
+
+            return View(viewModel);
         }
 
         public async Task<IActionResult> OrderDetails(int id)
@@ -48,6 +73,15 @@ namespace Schulprojekt.Controllers
 
             return View(order);
         }
+
+
+        public IActionResult PutOnSale(int id)
+        {
+            return (RedirectToAction("OrderList"));
+        }
+
+
+        //---------------------------------------------------------------------PRODUKTE VERWALTEN-------------------------------------------------------------------
 
 
         public async Task<IActionResult> ProductList()

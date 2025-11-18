@@ -50,32 +50,32 @@
                         <!-- Kartendaten (nur wenn Kreditkarte gewählt) -->
                         <div id="cardDataSection">
                             <div class="form-floating mb-3">
-                                <input for="CardNumber" class="form-control" placeholder="Kartennummer" maxlength="16" />
-                                <label for="CardNumber">Kartennummer</label>
-                                <span validation-for="CardNumber" class="text-danger"></span>
+                                <input asp-for="CardNumber" class="form-control" placeholder="Kartennummer" maxlength="16" />
+                                <label asp-for="CardNumber">Kartennummer</label>
+                                <span asp-validation-for="CardNumber" class="text-danger"></span>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input for="ExpiryDate" class="form-control" placeholder="MM/YY" />
-                                        <label for="ExpiryDate">Ablaufdatum (MM/YY)</label>
-                                        <span validation-for="ExpiryDate" class="text-danger"></span>
+                                        <input asp-for="ExpiryDate" class="form-control" placeholder="MM/YY" />
+                                        <label asp-for="ExpiryDate">Ablaufdatum (MM/YY)</label>
+                                        <span asp-validation-for="ExpiryDate" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input for="CVV" class="form-control" placeholder="CVV" maxlength="4" />
-                                        <label for="CVV">CVV</label>
-                                        <span validation-for="CVV" class="text-danger"></span>
+                                        <input asp-for="CVV" class="form-control" placeholder="CVV" maxlength="4" />
+                                        <label asp-for="CVV">CVV</label>
+                                        <span asp-validation-for="CVV" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input for="CardHolder" class="form-control" placeholder="Name des Karteninhabers" />
-                                <label for="CardHolder">Name des Karteninhabers</label>
-                                <span validation-for="CardHolder" class="text-danger"></span>
+                                <input asp-for="CardHolder" class="form-control" placeholder="Name des Karteninhabers" />
+                                <label asp-for="CardHolder">Name des Karteninhabers</label>
+                                <span asp-validation-for="CardHolder" class="text-danger"></span>
                             </div>
                         </div>
 
