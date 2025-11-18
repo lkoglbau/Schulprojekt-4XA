@@ -26,22 +26,33 @@
                     <p class="card-text">@product.Price.ToString("C")</p>
                     <p class="card-text"><small class="text-muted">@product.Category.Name</small></p>
 
-                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"
-                       class="btn btn-dark mt-2">Zum Produkt</a>
+                <div class="d-flex justify-content-between">
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"
+                           class="btn btn-dark mt-2">Zum Produkt</a>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id"
+                               class="btn btn-outline-danger mt-2">Edit</a>
+                        }
+                </div>
+
                 </div>
             </div>
         </div>
     }
-    <div class="addProduct col-md-4">
-        <a asp-action="Create" class="btn btn-light card-shadow d-flex justify-content-center align-items-center" style="height: 120px; width: 120px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-            </svg>
-        </a>
-    </div>
-
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="addProduct col-md-4">
+            <a asp-action="Create" class="btn btn-light card-shadow d-flex justify-content-center align-items-center" style="height: 120px; width: 120px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+            </a>
+        </div>
+    
+    }
 </div>
-
 
 <hr />
 

@@ -1,51 +1,70 @@
 ﻿@model Schulprojekt.Models.Order
 
-<h2>Bestellung bestätigt 🎉</h2>
+<style>
+    .bg-success{
+        border-radius:15px;
+        color: white;
+    }
 
-<p>Vielen Dank für deine Bestellung!</p>
+    .card{
+        border-radius: 15px;
+    }
+
+
+</style>
+
+
+
+
+
+
+
+
+
+<div class="bg-success mb-4 p-4 border-success">
+    <h2>Bestellung bestätigt 🎉</h2>
+    <h4>Vielen Dank für deine Bestellung!</h4>
+</div>
 
 <hr />
 
-<h4>Bestellnummer: @Model.Id</h4>
-<p><strong>Datum:</strong> @Model.OrderDate.ToShortDateString()</p>
-<p><strong>Gesamtbetrag:</strong> @Model.TotalAmount.ToString("C")</p>
-<p><strong>Status:</strong> @Model.Status</p>
+<div class="mb-4">
+    <h3>Lieferadresse:</h3>
+    
+    <p>@Model.ShippingInfo.Address <br>
+       @Model.ShippingInfo.PostalCode @Model.ShippingInfo.City <br>
+       @Model.ShippingInfo.Country<p/>
+</div>
 
-<h4>Lieferadresse:</h4>
-<ul>
-    <li>@Model.ShippingInfo.Address</li>
-    <li>@Model.ShippingInfo.PostalCode @Model.ShippingInfo.City</li>
-    <li>@Model.ShippingInfo.Country</li>
-</ul>
 
-<h4>Zahlung:</h4>
-<p><strong>Methode:</strong> @Model.Payment.Method</p>
-<p><strong>Status:</strong> @Model.Payment.Status</p>
+<div class="mb-4">
+    <h3>Zahlung:</h3>
+    <p>@Model.Payment.Method</p>
+    <p><strong>Status:</strong> @Model.Payment.Status</p>
+</div>
 
-<h4>Produkte:</h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Produkt</th>
-            <th>Menge</th>
-            <th>Einzelpreis</th>
-            <th>Gesamt</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.OrderItems)
-        {
-            <tr>
-                <td>@item.Product.Name</td>
-                <td>@item.Quantity</td>
-                <td>@item.UnitPrice.ToString("C")</td>
-                <td>@(item.Quantity* item.UnitPrice).ToString("C")</td>
-            </tr>
-        }
-    </tbody>
-</table>
-<div class="mt-3">
-    <a asp-action="DownloadInvoice" asp-route-id="@Model.Id" class="btn btn-primary">
-        PDF Downloaden
+
+<div>
+    <h3>Deine Bestellung:</h3>
+
+    @foreach (var item in Model.OrderItems)
+    {
+        <div class="card shadow-lg p-4 mb-3">
+            <div class="row">
+                <div class="col-md-6 d-flex align-items-center justify-content-center">
+                    <img src="~/images/@item.Product.ImageName" style="width: 300px; height: auto; border-radius: 15px" class="card-img-top" alt="@item.Product.Name" />
+                </div>
+                <div class="col-md-6">
+                    <h2>@item.Quantity x @item.Product.Name</h2>
+                    <h4>@item.Product.Price</h4>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="mt-3 d-flex justify-content-end">
+    <a asp-action="DownloadInvoice" asp-route-id="@Model.Id" class="btn btn-success">
+        Rechnung downloaden
     </a>
 </div>

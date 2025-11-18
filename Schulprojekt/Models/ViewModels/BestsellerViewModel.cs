@@ -3,7 +3,7 @@
     public class BestsellerViewModel
     {
 
-        public Product Product { get; set; }
+        public Product Product { get; set; } 
         public int TotalSold { get; set; }
     }
 }

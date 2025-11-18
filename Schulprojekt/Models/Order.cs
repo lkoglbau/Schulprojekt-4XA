@@ -17,7 +17,7 @@ namespace Schulprojekt.Models
 
         public string ?Status { get; set; }
 
-        public ICollection<OrderItem> ?OrderItems { get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
         public ShippingInfo ?ShippingInfo { get; set; }
 
         public required Payment Payment { get; set; }

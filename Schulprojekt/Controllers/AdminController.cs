@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Schulprojekt.Data;
 using Schulprojekt.Models.ViewModels;
 
@@ -166,7 +167,7 @@ namespace Schulprojekt.Controllers
         //---------------------------------------------------------------------USER VERWALTUNG-------------------------------------------------------------------
         public async Task<IActionResult> UsersList()
         {
-            var users = _userManager.Users.ToList();
+            var users = await _userManager.Users.ToListAsync();
             var userList = new List<AdminUserViewModel>();
 
             foreach (var user in users)
@@ -182,6 +183,8 @@ namespace Schulprojekt.Controllers
 
             return View(userList);
         }
+
+
 
         [HttpPost]
         public async Task<IActionResult> UpdateUserRole(string userId, string selectedRole)

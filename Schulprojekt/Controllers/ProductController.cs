@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Schulprojekt.Data;
 using Schulprojekt.Models;
+using Schulprojekt.Models.ViewModels;
 using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -213,6 +214,26 @@ namespace Schulprojekt.Controllers
             TempData["SuccessMessage"] = "Danke für deine Bewertung! Sie wird nach Freigabe sichtbar.";
 
             return RedirectToAction("Details", new { id = productId });
+        }
+
+
+        public async Task<IActionResult> Bestseller() {
+
+            var count = _context.OrderItems.Count();
+
+            var bestseller = await _context.OrderItems
+                .Include(i => i.Product)
+                .GroupBy(i => i.Product)
+                .Select(g => new BestsellerViewModel 
+                {
+                    Product = g.Key,
+                    TotalSold = g.Sum(i => i.Quantity)
+                })
+                .OrderByDescending(x => x.TotalSold)
+                .Take(3)
+                .ToListAsync();
+
+            return View(bestseller);
         }
 
     }

@@ -1,0 +1,96 @@
+﻿@using Schulprojekt.Models.ViewModels
+@model List<BestsellerViewModel>
+
+
+<style>
+    .card {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+</style>
+
+
+<section class="hero text-center d-flex align-items-center position-relative" style="
+    width: 100%;
+    min-height: 40vh;
+    background-image: url('/images/Hero-Page.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+">
+    <!-- Dunkles Overlay -->
+    <div style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Abdunkelung */
+        z-index: 1;
+    "></div>
+
+    <!-- Inhalt über dem Overlay -->
+    <div class="container position-relative" style="z-index: 2;">
+        <h2 class="display-4 fw-bold mb-3">Das sind unsere Bestseller!</h2>
+    </div>
+
+</section>
+
+
+
+<div class="container my-5 mt-3">
+    @if(Model.Count < 3)
+    {
+        if (User.IsInRole("Admin"))
+        {
+            <p class="text-muted ">Erziele mehr Verkäufe um die Bestseller Liste anzuzeigen...</p>
+        }
+        else
+        {
+            <p class="text-muted ">Hier gibt es noch nichts zu sehen...</p>
+        }
+    }
+    else
+    {
+        @foreach (var bestseller in Model)
+        {
+            <div class="card mb-5 mt-5 shadow-sm">
+                <div class="row g-0">
+                    <!-- Produktbild -->
+                    <div class="col-md-4">
+                        <img src="@Url.Content("~/images/" + bestseller.Product.ImageName)" class="img-fluid rounded-start"
+                             alt="@bestseller.Product.Name" style="height: 100%; object-fit: cover;" />
+                    </div>
+                    <!-- Produktdetails -->
+                    <div class="col-md-4">
+                        <div class="card-body d-flex flex-column justify-content-between h-100">
+                            <div>
+                                <h4 class="card-title">@bestseller.Product.Name</h4>
+                                <p class="card-text text-muted">Gekauft von <strong>@bestseller.TotalSold</strong> zufriedenen Kunden</p>
+                                <p class="card-text fs-5 fw-bold">@bestseller.Product.Price.ToString("C")</p>
+                            </div>
+
+                            <div class="mt-3">
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@bestseller.Product.Id"
+                                   class="btn btn-outline-dark me-2">Zum Produkt</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+
+

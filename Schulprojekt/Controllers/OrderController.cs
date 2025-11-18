@@ -111,7 +111,8 @@ namespace Schulprojekt.Controllers
         {
             var order = await _context.Orders
                 .Include(o => o.User)
-                .Include(o => o.OrderItems).ThenInclude(oi => oi.Product)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
                 .Include(o => o.ShippingInfo)
                 .Include(o => o.Payment)
                 .FirstOrDefaultAsync(o => o.Id == id);

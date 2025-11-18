@@ -20,8 +20,8 @@ namespace Schulprojekt.Controllers
             _userManager = userManager;
         }
 
-        public string GetUserId() {
-            return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        public string? GetUserId() {
+            return User?.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
         public async Task<IActionResult> Index()
@@ -39,26 +39,33 @@ namespace Schulprojekt.Controllers
         public async Task<IActionResult> Add(int productId)
         {
             var userId = GetUserId();
-            var existingItem = await _context.CartItems
-                .FirstOrDefaultAsync(c => c.ProductId == productId && c.UserId == userId);
-
-            if (existingItem != null)
+            if (string.IsNullOrEmpty(userId))
             {
-                existingItem.Quantity++;
+                return Unauthorized();
             }
             else
             {
-                var newItem = new CartItem
-                {
-                    ProductId = productId,
-                    Quantity = 1,
-                    UserId = userId
-                };
-                _context.CartItems.Add(newItem);
-            }
+                var existingItem = await _context.CartItems
+                    .FirstOrDefaultAsync(c => c.ProductId == productId && c.UserId == userId);
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+                if (existingItem != null)
+                {
+                    existingItem.Quantity++;
+                }
+                else
+                {
+                    var newItem = new CartItem
+                    {
+                        ProductId = productId,
+                        Quantity = 1,
+                        UserId = userId
+                    };
+                    _context.CartItems.Add(newItem);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPost]
