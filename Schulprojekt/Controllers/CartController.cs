@@ -64,7 +64,8 @@ namespace Schulprojekt.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Product");
+
             }
         }
 

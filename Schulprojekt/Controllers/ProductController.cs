@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Schulprojekt.Data;
 using Schulprojekt.Models;
 using Schulprojekt.Models.ViewModels;
@@ -36,11 +37,19 @@ namespace Schulprojekt.Controllers
             var viewModel = new ProductFilterViewModel
             {
                 Categories = categories,
-                SelectedCategory = category,
+                SelectedCategory = string.IsNullOrEmpty(category) ? null : category,
                 Products = products
             };
 
+
             return View(viewModel);
+        }
+
+
+        [HttpGet]
+        public IActionResult RemoveCategory()
+        {
+            return RedirectToAction("Index");
         }
 
         [HttpGet]

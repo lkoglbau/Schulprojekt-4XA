@@ -75,7 +75,7 @@ namespace Schulprojekt.Controllers
                 Payment = new Payment
                 {
                     Method = model.PaymentMethod,
-                    Status = "Offen"
+                    Status = "Bezahlt"
                 }
             };
 

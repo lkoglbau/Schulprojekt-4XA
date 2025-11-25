@@ -1,6 +1,23 @@
 ﻿@model ProductFilterViewModel
 
-<h2>Produkte</h2>
+<div class="d-flex justify-content-center align-items-center mt-5 mb-5">
+    @switch (Model.SelectedCategory)
+    {
+        case "Frauen":
+            <h2>FÜR DIE DAMEN</h2>
+            break;
+        case "Herren":
+            <h2>FÜR DIE HERREN</h2>
+            break;
+        case "Kinder":
+            <h2>FÜR DIE KIDS</h2>
+            break;
+        default:
+            <h2>FÜR ALLE</h2>
+            break;
+    }
+</div>
+
 
 <div class="chip-container">
     @foreach (var category in Model.Categories)
@@ -10,38 +27,51 @@
             @category.Name
         </a>
     }
+    <a asp-controller="Product" asp-action="RemoveCategory" 
+       class="chip" title="Filter entfernen">
+        X
+    </a>
 </div>
 
 <hr />
 
 <div class="row">
-    @foreach (var product in Model.Products)
+    @if(Model.Products.Count > 0)
     {
-        <div class="col-md-4">
-            <div class="card mb-3 card-shadow">
-                <img src="@Url.Content("~/images/" + product.ImageName)" class="card-img-top" alt="@product.Name"
-                     style="height: 350px; object-fit: cover;" />
-                <div class="card-body">
-                    <h5 class="card-title">@product.Name</h5>
-                    <p class="card-text">@product.Price.ToString("C")</p>
-                    <p class="card-text"><small class="text-muted">@product.Category.Name</small></p>
+        @foreach (var product in Model.Products)
+        {
+            <div class="col-md-4">
+                <div class="card mb-3 card-shadow">
+                    <img src="@Url.Content("~/images/" + product.ImageName)" class="card-img-top" alt="@product.Name"
+                         style="height: 350px; object-fit: cover;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">@product.Price.ToString("C")</p>
+                        <p class="card-text"><small class="text-muted">@product.Category.Name</small></p>
 
-                <div class="d-flex justify-content-between">
-                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"
-                           class="btn btn-dark mt-2">Zum Produkt</a>
+                        <div class="d-flex justify-content-between">
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"
+                               class="btn btn-dark mt-2">Zum Produkt</a>
 
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id"
-                               class="btn btn-outline-danger mt-2">Edit</a>
-                        }
-                </div>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id"
+                                   class="btn btn-outline-danger mt-2">Edit</a>
+                            }
+                        </div>
 
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     }
-    @if (User.IsInRole("Admin"))
+    else
+    {
+        <p>Hier gibt es noch nichts zu sehen...</p> <br />
+    }
+
+
+    @if (User.IsInRole("Admin") && Model.SelectedCategory == null)
     {
         <div class="addProduct col-md-4">
             <a asp-action="Create" class="btn btn-light card-shadow d-flex justify-content-center align-items-center" style="height: 120px; width: 120px;">
@@ -54,7 +84,6 @@
     }
 </div>
 
-<hr />
 
 
 <style>
@@ -88,10 +117,11 @@
         transition: box-shadow 0.3s ease;
         }
 
+
+
         .card-shadow:hover {
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
         }
-
 
         .addProduct{
             height: 500px;
